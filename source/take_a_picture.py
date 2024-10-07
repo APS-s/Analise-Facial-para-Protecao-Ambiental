@@ -1,5 +1,6 @@
 import cv2
 import os
+from picture_analyze import analisa_rosto
 
 
 def tirar_foto():
@@ -44,3 +45,7 @@ def tirar_foto():
     # Libera a webcam e fecha as janelas
     cap.release()
     cv2.destroyAllWindows()
+
+
+# Exemplo de uso
+tirar_foto()

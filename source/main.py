@@ -6,6 +6,8 @@ from picture_analyze import analisa_rosto
 from funcionarios_comparison import compare_faces
 
 # Bloco destinado a captura, analise e comparação de rostos
+# TODO: analisa_rosto() não está esperando o tirar_foto()
+#  terminar para continuar a execução, talvez implementar o tirar_foto() no inicio de analisa_rosto()
 tirar_foto()
 analisa_rosto('Rostos/Em analise/imagem_capturada.jpg')
 cargo_do_analisado = compare_faces('Rostos/Em analise/imagem_capturada.jpg')

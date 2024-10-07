@@ -4,6 +4,9 @@ import os
 from database_connection import conexao_a_database
 
 
+# TODO: Aumentar a precisão do reconhecimento de rostos
+# TODO: Modificar o nome do Script e do Metodo para então adicionar o
+#  metodo comparar_faces_funcionarios() e comparar_faces_perigosos()
 def compare_faces(image_path):
     # Conectar ao banco de dados usando a função database_connection
     conn = conexao_a_database()
@@ -15,6 +18,12 @@ def compare_faces(image_path):
 
     # Carregar a imagem analisada
     analyzed_image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
+    if analyzed_image is None:
+        print(f"Erro ao carregar a imagem analisada: {image_path}")
+        return None
+
+    # Inicializar o reconhecedor de rostos LBPH
+    recognizer = cv2.face.LBPHFaceRecognizer_create()
 
     # Obter todos os endereços de rostos e cargos do banco de dados
     cursor.execute("SELECT rosto, cargo FROM pessoasautorizadas")
@@ -23,8 +32,6 @@ def compare_faces(image_path):
     cargo_do_analisado = None
 
     for (db_face_path, db_cargo) in rows:
-        # Ajustar o caminho da imagem
-        
         print(f"Tentando carregar a imagem do caminho: {db_face_path}")
 
         # Verificar se o arquivo existe
@@ -34,13 +41,19 @@ def compare_faces(image_path):
 
         # Carregar a imagem do banco de dados a partir do endereço de arquivo
         db_face_image = cv2.imread(db_face_path, cv2.IMREAD_GRAYSCALE)
-
         if db_face_image is None:
             print(f"Erro ao carregar a imagem: {db_face_path}")
             continue
 
-        # Comparar as imagens (usando, por exemplo, a diferença absoluta)
-        if np.array_equal(analyzed_image, db_face_image):
+        # Treinar o reconhecedor com a imagem do banco de dados
+        recognizer.train([db_face_image], np.array([0]))
+
+        # Realizar a previsão na imagem analisada
+        label, confidence = recognizer.predict(analyzed_image)
+        print(f"Confiança: {confidence}")
+
+        # Definir um limiar de confiança para considerar uma correspondência
+        if confidence < 50:  # Ajuste o valor conforme necessário
             cargo_do_analisado = db_cargo
             break
 
