@@ -1,0 +1,60 @@
+-- Triggers --
+-- Quando um novo cadastro for criado
+DELIMITER //
+
+CREATE TRIGGER adiconar_nivel_acesso
+BEFORE INSERT ON PessoasAutorizadas
+FOR EACH ROW
+BEGIN
+    -- Atribui nível de acesso 1 para cargos específicos
+    IF NEW.cargo = 'Coordenador de Segurança' OR
+       NEW.cargo = 'Assessor de Comunicação' OR
+       NEW.cargo = 'Analista de Dados' THEN
+        SET NEW.nivel_acesso = 1;
+
+    -- Atribui nível de acesso 2 para todos os diretores
+    ELSEIF NEW.cargo LIKE '%Diretor%' THEN
+        SET NEW.nivel_acesso = 2;
+
+    -- Atribui nível de acesso 3 para o Ministro
+    ELSEIF NEW.cargo = 'Ministro' THEN
+        SET NEW.nivel_acesso = 3;
+
+    -- Atribui nível de acesso 0 para todos os outros cargos
+    ELSE
+        SET NEW.nivel_acesso = 0;
+    END IF;
+END;
+//
+
+DELIMITER ;
+
+-- Quando um cadastro for atualizado
+DELIMITER //
+
+CREATE TRIGGER atualizar_nivel_acesso
+BEFORE UPDATE ON PessoasAutorizadas
+FOR EACH ROW
+BEGIN
+    -- Atribui nível de acesso 1 para cargos específicos
+    IF NEW.cargo = 'Coordenador de Segurança' OR
+       NEW.cargo = 'Assessor de Comunicação' OR
+       NEW.cargo = 'Analista de Dados' THEN
+        SET NEW.nivel_acesso = 1;
+
+    -- Atribui nível de acesso 2 para todos os diretores
+    ELSEIF NEW.cargo LIKE '%Diretor%' THEN
+        SET NEW.nivel_acesso = 2;
+
+    -- Atribui nível de acesso 3 para o Ministro
+    ELSEIF NEW.cargo = 'Ministro' THEN
+        SET NEW.nivel_acesso = 3;
+
+    -- Atribui nível de acesso 0 para todos os outros cargos
+    ELSE
+        SET NEW.nivel_acesso = 0;
+    END IF;
+END;
+
+//
+DELIMITER ;
