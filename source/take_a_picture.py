@@ -4,14 +4,14 @@ import os
 
 def tirar_foto():
     # Caminho onde a imagem será salva
-    save_path = 'Rostos/Em analise'
+    save_path = 'faces/analyzing'
 
     # Verifica se a pasta existe, caso contrário, cria
     if not os.path.exists(save_path):
         os.makedirs(save_path)
 
     # Carregar o classificador em cascata para detecção de rostos
-    face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+    face_cascade = cv2.CascadeClassifier('models/haarcascade_frontalface_default.xml')
 
     # Abrir a webcam
     cap = cv2.VideoCapture(0)
@@ -34,9 +34,9 @@ def tirar_foto():
             cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 0, 0), 2)
 
         # Mostrar a imagem com os rostos detectados
-        cv2.imshow('Rostos Detectados', frame)
+        cv2.imshow('faces Detectados', frame)
 
-        # Salvar a imagem capturada na pasta 'Rostos/Em analise'
+        # Salvar a imagem capturada na pasta 'faces/analyzing'
         image_path = os.path.join(save_path, 'imagem_capturada.jpg')
         cv2.imwrite(image_path, frame)
         print(f"Imagem salva em: {image_path}")

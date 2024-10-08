@@ -3,7 +3,7 @@ import cv2
 
 def analisa_rosto(image_path):
     # Carregar o classificador em cascata para detecção de rostos
-    face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+    face_cascade = cv2.CascadeClassifier('models/haarcascade_frontalface_default.xml')
 
     # Carregar a imagem
     image = cv2.imread(image_path)
@@ -21,10 +21,10 @@ def analisa_rosto(image_path):
             cv2.rectangle(image, (x, y), (x + w, y + h), (255, 0, 0), 2)
 
         # Mostrar a imagem com os rostos detectados
-        # cv2.imshow('Rostos Detectados', image)
+        # cv2.imshow('faces Detectados', image)
         # cv2.waitKey(0)
         # cv2.destroyAllWindows()
 
 
 # Exemplo de uso
-analisa_rosto('Rostos/Em analise/imagem_capturada.jpg')
+analisa_rosto('faces/analyzing/imagem_capturada.jpg')

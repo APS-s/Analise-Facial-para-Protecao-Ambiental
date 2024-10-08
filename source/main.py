@@ -10,7 +10,6 @@ from file_opening import abrir_arquivos
 # pois já foram implementados em seus respectivos scripts e são executados quando
 # chamados.
 cargo_do_analisado = face_comparison.cargo_do_analisado
-print(cargo_do_analisado)
 
 # Definindo os níveis de acesso
 nivel_acesso1 = ['Coordenador de Segurança', 'Assessor de Comunicação', 'Analista de Dados']

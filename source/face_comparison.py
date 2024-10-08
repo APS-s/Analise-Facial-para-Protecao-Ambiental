@@ -26,8 +26,8 @@ def comparar_faces_funcionarios(image_path):
 
     # Inicializar o detector de rostos e o reconhecedor de rostos
     detector = dlib.get_frontal_face_detector()
-    sp = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
-    facerec = dlib.face_recognition_model_v1("dlib_face_recognition_resnet_model_v1.dat")
+    sp = dlib.shape_predictor("models/shape_predictor_68_face_landmarks.dat")
+    facerec = dlib.face_recognition_model_v1("models/dlib_face_recognition_resnet_model_v1.dat")
 
     # Detectar rostos na imagem analisada
     dets = detector(analyzed_image, 1)
@@ -88,6 +88,6 @@ def comparar_faces_funcionarios(image_path):
 
 
 # Exemplo de uso
-image_path = 'Rostos/Em analise/imagem_capturada.jpg'
+image_path = 'faces/analyzing/imagem_capturada.jpg'
 cargo_do_analisado = comparar_faces_funcionarios(image_path)
 print(f"Cargo do analisado: {cargo_do_analisado}")
