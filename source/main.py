@@ -1,16 +1,16 @@
-from file_opening import abrir_arquivos
-from database_connection import conexao_a_database
-from source.funcionarios_comparison import cargo_do_analisado
 from take_a_picture import tirar_foto
 from picture_analyze import analisa_rosto
-from funcionarios_comparison import compare_faces
+from database_connection import conexao_a_database
+import face_comparison
+from file_opening import abrir_arquivos
+
 
 # Bloco destinado a captura, analise e comparação de rostos
-# TODO: analisa_rosto() não está esperando o tirar_foto()
-#  terminar para continuar a execução, talvez implementar o tirar_foto() no inicio de analisa_rosto()
-tirar_foto()
-analisa_rosto('Rostos/Em analise/imagem_capturada.jpg')
-cargo_do_analisado = compare_faces('Rostos/Em analise/imagem_capturada.jpg')
+# Não é necessário implementar os métodos: tirar_foto, analisa_rosto e conexao_a_database,
+# pois já foram implementados em seus respectivos scripts e são executados quando
+# chamados.
+cargo_do_analisado = face_comparison.cargo_do_analisado
+print(cargo_do_analisado)
 
 # Definindo os níveis de acesso
 nivel_acesso1 = ['Coordenador de Segurança', 'Assessor de Comunicação', 'Analista de Dados']

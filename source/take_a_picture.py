@@ -1,6 +1,5 @@
 import cv2
 import os
-from picture_analyze import analisa_rosto
 
 
 def tirar_foto():
@@ -12,7 +11,7 @@ def tirar_foto():
         os.makedirs(save_path)
 
     # Carregar o classificador em cascata para detecção de rostos
-    face_cascade = cv2.CascadeClassifier('../haarcascade_frontalface_default.xml')
+    face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 
     # Abrir a webcam
     cap = cv2.VideoCapture(0)
