@@ -2,9 +2,9 @@ import cv2
 import os
 
 
-def tirar_foto():
-    # Caminho onde a imagem será salva
-    save_path = 'faces/analyzing'
+def tirar_e_analisar_foto(save_path, image_name):
+    print(
+        "Tirando foto...\nCertifique-se de que a câmera está funcionando corretamente.\nDeixe o rosto bem centralizado.")
 
     # Verifica se a pasta existe, caso contrário, cria
     if not os.path.exists(save_path):
@@ -22,13 +22,19 @@ def tirar_foto():
     # Verifica se a captura foi bem-sucedida
     if not ret:
         print("Não foi possível capturar a imagem.")
+        cap.release()
+        return None
+
+    # Converter a imagem para escala de cinza
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+
+    # Detectar rostos na imagem
+    faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5)
+
+    if len(faces) == 0:
+        print("Nenhum rosto detectado.")
     else:
-        # Converter a imagem para escala de cinza
-        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-
-        # Detectar rostos na imagem
-        faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5)
-
+        print(f"{len(faces)} rosto(s) detectado(s).")
         # Desenhar retângulos ao redor dos rostos detectados
         for (x, y, w, h) in faces:
             cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 0, 0), 2)
@@ -36,8 +42,8 @@ def tirar_foto():
         # Mostrar a imagem com os rostos detectados
         cv2.imshow('faces Detectados', frame)
 
-        # Salvar a imagem capturada na pasta 'faces/analyzing'
-        image_path = os.path.join(save_path, 'imagem_capturada.jpg')
+        # Salvar a imagem capturada na pasta especificada
+        image_path = os.path.join(save_path, image_name)
         cv2.imwrite(image_path, frame)
         print(f"Imagem salva em: {image_path}")
 
@@ -45,6 +51,4 @@ def tirar_foto():
     cap.release()
     cv2.destroyAllWindows()
 
-
-# Exemplo de uso
-tirar_foto()
+    return image_path

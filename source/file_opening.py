@@ -9,7 +9,3 @@ def abrir_arquivos(valor):
         print(f"Abrindo Arquivo {valor}")
     else:
         print(f"Arquivo {file_path} não encontrado. Verifique se o caminho está correto e se o arquivo existe.")
-
-
-# Exemplo de uso
-# abrir_arquivos(1)

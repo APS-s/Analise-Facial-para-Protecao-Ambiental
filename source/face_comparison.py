@@ -85,9 +85,3 @@ def comparar_faces_funcionarios(image_path):
     conn.close()
 
     return cargo_do_analisado
-
-
-# Exemplo de uso
-image_path = 'faces/analyzing/imagem_capturada.jpg'
-cargo_do_analisado = comparar_faces_funcionarios(image_path)
-print(f"Cargo do analisado: {cargo_do_analisado}")
