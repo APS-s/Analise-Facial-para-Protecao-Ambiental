@@ -31,6 +31,8 @@ def tirar_e_analisar_foto(save_path, image_name):
     # Detectar rostos na imagem
     faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5)
 
+    image_path = None  # Initialize image_path
+
     if len(faces) == 0:
         print("Nenhum rosto detectado.")
     else:
