@@ -2,7 +2,7 @@ import os
 
 
 def abrir_arquivos(valor):
-    file_path = os.path.abspath(f'confidencial_documents/Doc{valor}.pdf')
+    file_path = os.path.abspath(f'confidencial_documents/Doc{valor}.docx')
     # print(f"Resolved file path: {file_path}")
     if os.path.exists(file_path):
         os.startfile(file_path)

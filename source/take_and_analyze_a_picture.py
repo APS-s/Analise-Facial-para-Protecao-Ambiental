@@ -3,8 +3,9 @@ import os
 
 
 def tirar_e_analisar_foto(save_path, image_name):
-    print(
-        "Tirando foto...\nCertifique-se de que a câmera está funcionando corretamente.\nDeixe o rosto bem centralizado.")
+    print("Tirando foto..."
+          "\nCertifique-se de que a câmera está funcionando corretamente."
+          "\nDeixe o rosto bem centralizado.")
 
     # Verifica se a pasta existe, caso contrário, cria
     if not os.path.exists(save_path):
@@ -13,8 +14,15 @@ def tirar_e_analisar_foto(save_path, image_name):
     # Carregar o classificador em cascata para detecção de rostos
     face_cascade = cv2.CascadeClassifier('models/haarcascade_frontalface_default.xml')
 
+    if face_cascade.empty():
+        print("Erro ao carregar o classificador em cascata.")
+
     # Abrir a webcam
     cap = cv2.VideoCapture(0)
+
+    if not cap.isOpened():
+        print("Erro ao acessar a câmera.")
+        return None
 
     # Captura uma imagem
     ret, frame = cap.read()
@@ -29,7 +37,11 @@ def tirar_e_analisar_foto(save_path, image_name):
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
     # Detectar rostos na imagem
-    faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5)
+    # scaleFactor: Um valor mais baixo faz a detecção ser mais sensível a rostos de tamanhos diferentes. Tente
+    # diminuir de 1.1 para algo como 1.05.
+    # minNeighbors: Um valor menor aumenta a chance de detecção, mas pode gerar
+    # mais falsos positivos. Tente reduzir de 5 para 3.
+    faces = face_cascade.detectMultiScale(gray, scaleFactor=1.05, minNeighbors=3, minSize=(30, 30))  # PARAMETROS IMPORTANTES
 
     image_path = None  # Initialize image_path
 
@@ -54,3 +66,6 @@ def tirar_e_analisar_foto(save_path, image_name):
     cv2.destroyAllWindows()
 
     return image_path
+
+
+# tirar_e_analisar_foto('faces/analyzing', 'imagem_capturada.jpg')

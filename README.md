@@ -2,8 +2,9 @@
 [ ] Melhorar o reconhecimento facial
 
 ### A fazer ainda
-[ ] Conectar o Banco de Dados a rede do Hugo
-[ ] Criar o comparar_faces_perigosos() para comparar com os rostos perigosos (TALVEZ)
+# TODO: Melhorar a detecção facial
+# TODO: Criar um tratamento de erros no main.py e register_app.py OU no take_and_analyze_a_picture.py para caso ele não consiga detectar o rosto, ele não de erro, apenas uma mensagem dizendo pra tirar outra foto
+
 
 ### Links Importantes
 https://trello.com/b/DGHwHJAm/aps

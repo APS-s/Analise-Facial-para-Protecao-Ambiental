@@ -4,6 +4,7 @@ import numpy as np
 import os
 from database_connection import conexao_a_database
 
+
 # TODO: Criar o comparar_faces_perigosos() para comparar com os rostos perigosos
 
 
@@ -85,3 +86,6 @@ def comparar_faces_funcionarios(image_path):
     conn.close()
 
     return cargo_do_analisado
+
+
+# comparar_faces_funcionarios('faces/analyzing/imagem_capturada.jpg')
