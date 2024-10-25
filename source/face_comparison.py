@@ -5,11 +5,8 @@ import os
 from database_connection import conexao_a_database
 
 
-# TODO: Criar o comparar_faces_perigosos() para comparar com os rostos perigosos
-
-
 def comparar_faces_funcionarios(image_path):
-    min_distance = 0.9
+    min_distance = 0.6
 
     # Conectar ao banco de dados usando a função database_connection
     conn = conexao_a_database()
@@ -31,6 +28,7 @@ def comparar_faces_funcionarios(image_path):
     facerec = dlib.face_recognition_model_v1("models/dlib_face_recognition_resnet_model_v1.dat")
 
     # Detectar rostos na imagem analisada
+    # TODO: Arrumar está detecção, o take_and_analyze_a_picture_rede diz que existe rosto
     dets = detector(analyzed_image, 1)
     if len(dets) == 0:
         print("Nenhum rosto detectado na imagem analisada.")
@@ -88,4 +86,4 @@ def comparar_faces_funcionarios(image_path):
     return cargo_do_analisado
 
 
-# comparar_faces_funcionarios('faces/analyzing/imagem_capturada.jpg')
+comparar_faces_funcionarios('faces/analyzing/imagem_capturada.jpg')
