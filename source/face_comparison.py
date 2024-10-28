@@ -6,7 +6,7 @@ from database_connection import conexao_a_database
 
 
 def comparar_faces_funcionarios(image_path):
-    min_distance = 0.6
+    min_distance = 0.5
 
     # Conectar ao banco de dados usando a função database_connection
     conn = conexao_a_database()
@@ -28,7 +28,6 @@ def comparar_faces_funcionarios(image_path):
     facerec = dlib.face_recognition_model_v1("models/dlib_face_recognition_resnet_model_v1.dat")
 
     # Detectar rostos na imagem analisada
-    # TODO: Arrumar está detecção, o take_and_analyze_a_picture_rede diz que existe rosto
     dets = detector(analyzed_image, 1)
     if len(dets) == 0:
         print("Nenhum rosto detectado na imagem analisada.")
@@ -43,7 +42,7 @@ def comparar_faces_funcionarios(image_path):
     rows = cursor.fetchall()
 
     cargo_do_analisado = "Nenhum"
-    min_distance = float("inf")
+    # min_distance = float("inf")
 
     for (db_face_path, db_cargo) in rows:
         print(f"Tentando carregar a imagem do caminho: {db_face_path}")
@@ -72,12 +71,12 @@ def comparar_faces_funcionarios(image_path):
         db_face_descriptor = facerec.compute_face_descriptor(db_face_image, db_shape)
 
         # Calcular a distância entre os descritores de rosto
-        distance = np.linalg.norm(np.array(analyzed_face_descriptor) - np.array(db_face_descriptor))
+        distance = np.linalg.norm(np.array(db_face_descriptor) - np.array(analyzed_face_descriptor))
         print(f"Distância: {distance}")
 
         # Definir um limiar de distância para considerar uma correspondência
-        if distance > min_distance:
-            min_distance = distance
+        if distance <= min_distance:
+            # min_distance = distance
             cargo_do_analisado = db_cargo
 
     cursor.close()

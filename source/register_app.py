@@ -1,18 +1,20 @@
 import tkinter as tk
 from tkinter import messagebox
-from take_and_analyze_a_picture import tirar_e_analisar_foto
+from take_and_analyze_a_picture_neural import tirar_e_analisar_foto_rede as tirar_e_analisar_foto
 from database_connection import conexao_a_database
+
+global image_path
 
 
 # Função para salvar os dados no banco de dados
-def salvar_dados(nome, cargo, image_path):
-    if nome and cargo and image_path:
+def salvar_dados(nome, cargo, image_path_def):
+    if nome and cargo and image_path_def:
         try:
             with conexao_a_database() as conn:
                 cursor = conn.cursor()
                 cursor.execute('''
                     INSERT INTO pessoasautorizadas (nome_completo, cargo, rosto) VALUES (%s, %s, %s)
-                ''', (nome, cargo, image_path))
+                ''', (nome, cargo, image_path_def))
                 conn.commit()
             messagebox.showinfo("Sucesso", "Dados inseridos com sucesso!")
         except Exception as e:
@@ -32,9 +34,9 @@ def tirar_foto_wrapper():
             max_id = cursor.fetchone()[0]
             next_id = 1 if max_id is None else max_id + 1
 
-            image_path = 'faces/employees/'
+            image_path_local = 'faces/employees/'
             image_name = f'face_{next_id}.jpg'
-            return tirar_e_analisar_foto(image_path, image_name)
+            return tirar_e_analisar_foto(image_path_local, image_name)
     except Exception as e:
         messagebox.showerror("Erro", f"Erro ao tirar a foto: {e}")
         return None
@@ -64,8 +66,8 @@ def criar_ui():
     def on_salvar_dados():
         global image_path
         nome = entry_nome.get()
-        cargo = cargo_var.get()
-        salvar_dados(nome, cargo, image_path)
+        cargo2 = cargo_var.get()
+        salvar_dados(nome, cargo2, image_path)
         image_path = None  # Reseta o image_path para que o usuario possa continuar adicionando funcionarios
 
     btn_foto = tk.Button(root, text="Tirar Foto", command=on_tirar_foto)

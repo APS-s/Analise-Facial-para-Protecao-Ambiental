@@ -3,7 +3,6 @@ import os
 import numpy as np
 
 
-# Com desfoque e escala de cinza, foram obtidos os maiores valores
 def tirar_e_analisar_foto_rede(save_path, image_name):
     image_path = None
     print("Tirando foto..."
@@ -25,6 +24,7 @@ def tirar_e_analisar_foto_rede(save_path, image_name):
         print("Erro ao acessar a câmera.")
         return None
 
+    print("Após enquadramento, pressione a tecla ESQ")
     while True:
         ret_val, img = cap.read()
         cv2.imshow('my webcam', img)
@@ -87,5 +87,4 @@ def tirar_e_analisar_foto_rede(save_path, image_name):
 
     return image_path
 
-
-tirar_e_analisar_foto_rede('faces/analyzing', 'imagem_capturada.jpg')
+# tirar_e_analisar_foto_rede('faces/analyzing', 'imagem_capturada.jpg')

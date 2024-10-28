@@ -1,10 +1,9 @@
-from take_and_analyze_a_picture_rede import tirar_e_analisar_foto_rede
-from database_connection import conexao_a_database
+from take_and_analyze_a_picture_neural import tirar_e_analisar_foto_rede as tirar_e_analisar_foto
 from face_comparison import comparar_faces_funcionarios
 from file_opening import abrir_arquivos
 
 # Bloco destinado a captura, analise e comparação de rostos
-image_path = tirar_e_analisar_foto_rede('faces/analyzing', 'imagem_capturada.jpg')
+image_path = tirar_e_analisar_foto('faces/analyzing', 'imagem_capturada.jpg')
 cargo_do_analisado = comparar_faces_funcionarios(image_path)
 print(f"Cargo do analisado: {cargo_do_analisado}")
 
