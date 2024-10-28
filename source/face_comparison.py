@@ -85,4 +85,4 @@ def comparar_faces_funcionarios(image_path):
     return cargo_do_analisado
 
 
-comparar_faces_funcionarios('faces/analyzing/imagem_capturada.jpg')
+# comparar_faces_funcionarios('faces/analyzing/imagem_capturada.jpg')

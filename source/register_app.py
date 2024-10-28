@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 from take_and_analyze_a_picture_neural import tirar_e_analisar_foto_rede as tirar_e_analisar_foto
+# from take_and_analyze_a_picture_cascate import tirar_e_analisar_foto_cascata as tirar_e_analisar_foto
 from database_connection import conexao_a_database
 
 global image_path

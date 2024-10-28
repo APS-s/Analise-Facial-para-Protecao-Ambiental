@@ -60,7 +60,7 @@ def tirar_e_analisar_foto_rede(save_path, image_name):
     faces_detected = 0
     for i in range(detections.shape[2]):
         confidence = detections[0, 0, i, 2]
-        if confidence > 0.7:
+        if confidence > 0.8:
             # Obter coordenadas do rosto
             box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
             (startX, startY, endX, endY) = box.astype("int")
@@ -78,7 +78,7 @@ def tirar_e_analisar_foto_rede(save_path, image_name):
 
         # Salvar a imagem capturada na pasta especificada
         image_path = os.path.join(save_path, image_name)
-        cv2.imwrite(image_path, gray)
+        cv2.imwrite(image_path, frame)
         print(f"Imagem salva em: {image_path}")
 
     # Libera a webcam e fecha as janelas
@@ -86,5 +86,6 @@ def tirar_e_analisar_foto_rede(save_path, image_name):
     cv2.destroyAllWindows()
 
     return image_path
+
 
 # tirar_e_analisar_foto_rede('faces/analyzing', 'imagem_capturada.jpg')

@@ -2,7 +2,7 @@ import cv2
 import os
 
 
-def tirar_e_analisar_foto(save_path, image_name):
+def tirar_e_analisar_foto_cascata(save_path, image_name):
     print("Tirando foto..."
           "\nCertifique-se de que a câmera está funcionando corretamente."
           "\nDeixe o rosto bem centralizado.")
@@ -17,8 +17,18 @@ def tirar_e_analisar_foto(save_path, image_name):
     if face_cascade.empty():
         print("Erro ao carregar o classificador em cascata.")
 
-    # Abrir a webcam
+    # Abre a webcam
     cap = cv2.VideoCapture(0)
+    if not cap.isOpened():
+        print("Erro ao acessar a câmera.")
+        return None
+
+    print("Após enquadramento, pressione a tecla ESQ")
+    while True:
+        ret_val, img = cap.read()
+        cv2.imshow('my webcam', img)
+        if cv2.waitKey(1) == 27:
+            break  # esc to quit
 
     if not cap.isOpened():
         print("Erro ao acessar a câmera.")
@@ -70,4 +80,4 @@ def tirar_e_analisar_foto(save_path, image_name):
     return image_path
 
 
-tirar_e_analisar_foto('faces/analyzing', 'imagem_capturada.jpg')
+# tirar_e_analisar_foto_cascata('faces/analyzing', 'imagem_capturada.jpg')

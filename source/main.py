@@ -1,4 +1,5 @@
 from take_and_analyze_a_picture_neural import tirar_e_analisar_foto_rede as tirar_e_analisar_foto
+# from take_and_analyze_a_picture_cascate import tirar_e_analisar_foto_cascata as tirar_e_analisar_foto
 from face_comparison import comparar_faces_funcionarios
 from file_opening import abrir_arquivos
 
