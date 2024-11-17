@@ -3,6 +3,7 @@ import os
 
 
 def tirar_e_analisar_foto_cascata(save_path, image_name):
+    image_path = None
     print("Tirando foto..."
           "\nCertifique-se de que a câmera está funcionando corretamente."
           "\nDeixe o rosto bem centralizado.")
@@ -16,6 +17,7 @@ def tirar_e_analisar_foto_cascata(save_path, image_name):
 
     if face_cascade.empty():
         print("Erro ao carregar o classificador em cascata.")
+        return None
 
     # Abre a webcam
     cap = cv2.VideoCapture(0)
@@ -23,61 +25,39 @@ def tirar_e_analisar_foto_cascata(save_path, image_name):
         print("Erro ao acessar a câmera.")
         return None
 
-    print("Após enquadramento, pressione a tecla ESQ")
+    print("Pressione a tecla 'ESC' para salvar a imagem e sair.")
+
     while True:
-        ret_val, img = cap.read()
-        cv2.imshow('my webcam', img)
-        if cv2.waitKey(1) == 27:
-            break  # esc to quit
+        ret, frame = cap.read()
+        if not ret:
+            print("Não foi possível capturar a imagem.")
+            break
 
-    if not cap.isOpened():
-        print("Erro ao acessar a câmera.")
-        return None
+        # Converter a imagem para escala de cinza e aplicar melhorias
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        gray = cv2.equalizeHist(gray)  # Equalização do histograma na imagem em escala de cinza
+        frame = cv2.GaussianBlur(frame, (5, 5), 0)  # Aplicar suavização na imagem original
 
-    # Captura uma imagem
-    ret, frame = cap.read()
+        # Detectar rostos na imagem
+        faces = face_cascade.detectMultiScale(gray, scaleFactor=1.05, minNeighbors=4, minSize=(30, 30))
 
-    # Verifica se a captura foi bem-sucedida
-    if not ret:
-        print("Não foi possível capturar a imagem.")
-        cap.release()
-        return None
-
-    # Converter a imagem para escala de cinza e aplicar melhorias
-    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    gray = cv2.equalizeHist(gray)  # Equalização do histograma na imagem em escala de cinza
-    frame = cv2.GaussianBlur(frame, (5, 5), 0)  # Aplicar suavização na imagem original
-
-    # Detectar rostos na imagem
-    # scaleFactor: Um valor mais baixo faz a detecção ser mais sensível a rostos de tamanhos diferentes. Tente
-    # diminuir de 1.1 para algo como 1.05.
-    # minNeighbors: Um valor menor aumenta a chance de detecção, mas pode gerar
-    # mais falsos positivos. Tente reduzir de 5 para 3.
-    faces = face_cascade.detectMultiScale(gray, scaleFactor=1.05, minNeighbors=4, minSize=(30, 30))  # PARAMETROS IMPORTANTES
-
-    image_path = None  # Initialize image_path
-
-    if len(faces) == 0:
-        print("Nenhum rosto detectado.")
-    else:
-        print(f"{len(faces)} rosto(s) detectado(s).")
-        # Desenhar retângulos ao redor dos rostos detectados
+        num_faces = len(faces)
         for (x, y, w, h) in faces:
             cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 0, 0), 2)
 
         # Mostrar a imagem com os rostos detectados
-        cv2.imshow('faces Detectados', frame)
+        cv2.imshow('Faces Detectadas', frame)
 
-        # Salvar a imagem capturada na pasta especificada
-        image_path = os.path.join(save_path, image_name)
-        cv2.imwrite(image_path, frame)
-        print(f"Imagem salva em: {image_path}")
+        # Verificar se a tecla 'ESC' foi pressionada para salvar a imagem e sair
+        if cv2.waitKey(1) & 0xFF == 27:  # 27 is the ASCII code for ESC
+            image_path = os.path.join(save_path, image_name)
+            cv2.imwrite(image_path, frame)
+            print(f"Imagem salva em: {image_path}")
+            print(f"Número de rostos detectados: {num_faces}")
+            break
 
     # Libera a webcam e fecha as janelas
     cap.release()
     cv2.destroyAllWindows()
 
     return image_path
-
-
-# tirar_e_analisar_foto_cascata('faces/analyzing', 'imagem_capturada.jpg')
