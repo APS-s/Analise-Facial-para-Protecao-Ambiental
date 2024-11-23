@@ -2,7 +2,6 @@ import cv2
 import os
 import numpy as np
 
-
 def tirar_e_analisar_foto_rede(save_path, image_name):
     image_path = None
     print("Tirando foto..."
@@ -59,14 +58,22 @@ def tirar_e_analisar_foto_rede(save_path, image_name):
 
         # Verificar se a tecla 'ESC' foi pressionada para salvar a imagem e sair
         if cv2.waitKey(1) & 0xFF == 27:  # 27 is the ASCII code for ESC
-            image_path = os.path.join(save_path, image_name)
-            cv2.imwrite(image_path, frame)
-            print(f"Imagem salva em: {image_path}")
-            print(f"Número de rostos detectados: {num_faces}")
-            break
+            if num_faces == 1:
+                image_path = os.path.join(save_path, image_name)
+                cv2.imwrite(image_path, frame)
+                print(f"Imagem salva em: {image_path}")
+                print(f"Número de rostos detectados: {num_faces}")
+                break
+            elif num_faces == 0:
+                print("Nenhum rosto detectado. Tente novamente.")
+            else:
+                print("Mais de um rosto detectado. Tente novamente.")
 
     # Libera a webcam e fecha as janelas
     cap.release()
     cv2.destroyAllWindows()
 
     return image_path
+
+
+# tirar_e_analisar_foto_rede('faces/analyzing', 'imagem_capturada.jpg')

@@ -5,26 +5,32 @@ from take_and_analyze_a_picture_neural import tirar_e_analisar_foto_rede as tira
 from database_connection import conexao_a_database
 
 global image_path
+image_path = None
 
 
 # Função para salvar os dados no banco de dados
 def salvar_dados(nome, cargo, image_path_def):
-    if nome and cargo and image_path_def:
-        try:
-            with conexao_a_database() as conn:
-                cursor = conn.cursor()
-                cursor.execute('''
-                    INSERT INTO pessoasautorizadas (nome_completo, cargo, rosto) VALUES (%s, %s, %s)
-                ''', (nome, cargo, image_path_def))
-                conn.commit()
-            messagebox.showinfo("Sucesso", "Dados inseridos com sucesso!")
-        except Exception as e:
-            if "image_path" in str(e):
-                messagebox.showerror("Erro", "Tire uma foto antes de salvar")
-            else:
-                messagebox.showerror("Erro", f"Erro ao salvar os dados: {e}")
-    else:
-        messagebox.showwarning("Aviso", "Preencha todos os campos e tire uma foto antes de salvar!")
+    try:
+        if not nome:
+            raise ValueError("Nome não foi preenchido.")
+        if not cargo:
+            raise ValueError("Cargo não foi selecionado.")
+        if not image_path_def:
+            raise ValueError("Foto não foi tirada.")
+
+        with conexao_a_database() as conn:
+            cursor = conn.cursor()
+            cursor.execute('''
+                INSERT INTO pessoasautorizadas (nome_completo, cargo, rosto) VALUES (%s, %s, %s)
+            ''', (nome, cargo, image_path_def))
+            conn.commit()
+        messagebox.showinfo("Sucesso", "Dados inseridos com sucesso!")
+        return True
+    except ValueError as ve:
+        messagebox.showwarning("Aviso", str(ve))
+    except Exception as e:
+        messagebox.showerror("Erro", f"Erro ao salvar os dados: {e}")
+    return False
 
 
 def tirar_foto_wrapper():
@@ -68,8 +74,11 @@ def criar_ui():
         global image_path
         nome = entry_nome.get()
         cargo2 = cargo_var.get()
-        salvar_dados(nome, cargo2, image_path)
-        image_path = None  # Reseta o image_path para que o usuario possa continuar adicionando funcionarios
+        if not image_path:
+            messagebox.showwarning("Aviso", "Por favor, tire a foto antes de salvar.")
+            return
+        if salvar_dados(nome, cargo2, image_path):
+            image_path = None  # Reseta o image_path para que o usuario possa continuar adicionando funcionarios
 
     btn_foto = tk.Button(root, text="Tirar Foto", command=on_tirar_foto)
     btn_foto.grid(row=8, column=1, padx=10, pady=10)

@@ -3,7 +3,7 @@ from take_and_analyze_a_picture_neural import tirar_e_analisar_foto_rede as tira
 from face_comparison import comparar_faces_funcionarios
 from file_opening import abrir_arquivos
 
-# Bloco destinado a captura, analise e comparação de rostos
+# Bloco destinado à captura, analise e comparação de rostos
 image_path = tirar_e_analisar_foto('faces/analyzing', 'imagem_capturada.jpg')
 cargo_do_analisado = comparar_faces_funcionarios(image_path)
 print(f"Cargo do analisado: {cargo_do_analisado}")
